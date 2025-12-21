@@ -1,4 +1,6 @@
-func listCmd(prefs: [Domain], domain: String?) {
+func listCmd(domain: String?) throws {
+    let prefs = try getPreferenceList()
+
     if domain != nil {
         if let domain = prefs.first(where: { $0.name == domain }) {
             domain.preferences.forEach { pref in

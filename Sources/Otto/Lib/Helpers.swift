@@ -1,41 +1,47 @@
 import Foundation
 
-func getPreferenceList() -> [Domain] {
+func getPreferenceList() throws -> [Domain] {
     var preferenceList: [Domain] = []
 
-    do {
-        let url = Bundle
-            .module
-            .url(
-                forResource: "SettingsList",
-                withExtension: "json"
-            )!
+    let url = Bundle
+        .module
+        .url(
+            forResource: "SettingsList",
+            withExtension: "json"
+        )!
 
-        let contents = try Data(contentsOf: url)
+    let contents = try Data(contentsOf: url)
 
-        preferenceList = try JSONDecoder().decode([Domain].self, from: contents)
-    } catch {
-        print(error)
-    }
+    preferenceList = try JSONDecoder().decode([Domain].self, from: contents)
 
     return preferenceList
 }
 
-func runCmd(
-    args: [String],
-) -> String {
-    let task = Process()
-    let pipe = Pipe()
+func getPreferenceValues(
+    prefs: [Domain],
+    domain: String?,
+    key: String?
+) throws -> (String, String) {
+    let domainId: String
+    let preferenceKey: String
 
-    task.standardOutput = pipe
-    task.standardError = pipe
-    task.arguments = args
-    task.launchPath = "/bin/zsh"
-    task.standardInput = nil
-    task.launch()
+    if domain == nil || key == nil {
+        throw OttoError.runtimeError("Missing required values.")
+    }
 
-    let data = pipe.fileHandleForReading.readDataToEndOfFile()
-    let output = String(data: data, encoding: .utf8)!
+    if let domainObject = prefs.first(where: { $0.name == domain }) {
+        domainId = domainObject.domain
 
-    return output
+        if let preferenceObject = domainObject.preferences.first(where: { $0.name == key }) {
+            preferenceKey = preferenceObject.key
+        } else {
+            throw OttoError.runtimeError(
+                "Preference key '\(key!)' not found in domain '\(domain!)'.")
+        }
+
+    } else {
+        throw OttoError.runtimeError("Domain \(domain!) not found.")
+    }
+
+    return (domainId, preferenceKey)
 }
