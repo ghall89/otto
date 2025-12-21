@@ -1,4 +1,4 @@
-func readCmd(domain: String?, key: String?) throws {
+func getCmd(domain: String?, key: String?) throws {
     let shell = Shell()
 
     do {

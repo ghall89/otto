@@ -5,46 +5,56 @@ struct Otto: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "otto",
         abstract: "A utility for managing hidden macOS preferences.",
-        subcommands: [List.self, Read.self, Set.self]
+        subcommands: [List.self, Get.self, Set.self]
     )
-}
-
-struct Arguments: ParsableArguments {
-    @Argument(help: "Preference domain")
-    var domain: String?
-
-    @Argument(help: "Preference key")
-    var key: String?
 }
 
 extension Otto {
     struct List: ParsableCommand {
-        @OptionGroup
-        var shared: Arguments
+        static let configuration = CommandConfiguration(
+            abstract: "List all available preferences."
+        )
+
+        @Argument(help: "Preference domain")
+        var domain: String?
 
         mutating func run() throws {
-            try listCmd(domain: shared.domain)
+            try listCmd(domain: domain)
         }
     }
 
-    struct Read: ParsableCommand {
-        @OptionGroup
-        var shared: Arguments
+    struct Get: ParsableCommand {
+        static let configuration = CommandConfiguration(
+            abstract: "Check the current value of a preference."
+        )
+
+        @Argument(help: "Preference domain")
+        var domain: String
+
+        @Argument(help: "Preference key")
+        var key: String
 
         mutating func run() throws {
-            try readCmd(domain: shared.domain, key: shared.key)
+            try getCmd(domain: domain, key: key)
         }
     }
 
     struct Set: ParsableCommand {
-        @OptionGroup
-        var shared: Arguments
+        static let configuration = CommandConfiguration(
+            abstract: "Set a new value for a preference."
+        )
+
+        @Argument(help: "Preference domain")
+        var domain: String
+
+        @Argument(help: "Preference key")
+        var key: String
 
         @Argument(help: "Preference value")
-        var value: String?
+        var value: String
 
         mutating func run() throws {
-            try setCmd(domain: shared.domain, key: shared.key, value: value)
+            try setCmd(domain: domain, key: key, value: value)
         }
     }
 }
