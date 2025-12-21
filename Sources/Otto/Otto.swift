@@ -9,40 +9,42 @@ struct Otto: ParsableCommand {
     )
 }
 
+struct Arguments: ParsableArguments {
+    @Argument(help: "Preference domain")
+    var domain: String?
+
+    @Argument(help: "Preference key")
+    var key: String?
+}
+
 extension Otto {
     struct List: ParsableCommand {
-        @Argument(help: "Preference domain")
-        var domain: String?
+        @OptionGroup
+        var shared: Arguments
 
         mutating func run() throws {
-            try listCmd(domain: domain)
+            try listCmd(domain: shared.domain)
         }
     }
 
     struct Read: ParsableCommand {
-        @Argument(help: "Preference domain")
-        var domain: String?
-
-        @Argument(help: "Preference key")
-        var key: String?
+        @OptionGroup
+        var shared: Arguments
 
         mutating func run() throws {
-            try readCmd(domain: domain, key: key)
+            try readCmd(domain: shared.domain, key: shared.key)
         }
     }
 
     struct Set: ParsableCommand {
-        @Argument(help: "Preference domain")
-        var domain: String?
-
-        @Argument(help: "Preference key")
-        var key: String?
+        @OptionGroup
+        var shared: Arguments
 
         @Argument(help: "Preference value")
         var value: String?
 
         mutating func run() throws {
-            try setCmd(domain: domain, key: key, value: value)
+            try setCmd(domain: shared.domain, key: shared.key, value: value)
         }
     }
 }
