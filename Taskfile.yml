@@ -8,4 +8,4 @@ tasks:
   run:
     desc: "Run application"
     cmds:
-      - "swift run"
+      - "swift run otto {{.CLI_ARGS}}"
