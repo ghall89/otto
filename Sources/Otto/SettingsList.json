@@ -1,0 +1,13 @@
+[
+  {
+    "name": "finder",
+    "domain": "com.apple.finder",
+    "preferences": [
+      {
+        "name": "show-all",
+        "key": "AppleShowAllFiles",
+        "type": "-bool"
+      }
+    ]
+  }
+]
