@@ -9,7 +9,7 @@ struct Shell {
 
         task.standardOutput = pipe
         task.standardError = pipe
-        task.arguments = ["-c", "/usr/bin/defaults \(cmd)"]
+        task.arguments = ["-c", cmd]
         task.launchPath = zsh
         task.standardInput = nil
         task.launch()
@@ -21,5 +21,9 @@ struct Shell {
         }
 
         return output
+    }
+
+    func defaults(_ cmd: String) -> String {
+        return self.run("/usr/bin/defaults \(cmd)")
     }
 }

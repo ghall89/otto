@@ -2,11 +2,24 @@
   {
     "name": "finder",
     "domain": "com.apple.finder",
+    "reset_when_applied": true,
     "preferences": [
       {
         "name": "show-all",
         "key": "AppleShowAllFiles",
         "type": "-bool"
+      }
+    ]
+  },
+  {
+    "name": "dock",
+    "domain": "com.apple.dock",
+    "reset_when_applied": true,
+    "preferences": [
+      {
+        "name": "autohide-delay",
+        "key": "autohide-delay",
+        "type": "-float"
       }
     ]
   }
