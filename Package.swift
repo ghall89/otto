@@ -7,17 +7,19 @@ let package = Package(
     name: "otto",
     platforms: [.macOS(.v26)],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0")
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
+        .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.0.0")),
     ],
     targets: [
         .executableTarget(
             name: "otto",
             dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser")
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "Rainbow", package: "Rainbow"),
             ],
             path: "Sources",
             resources: [
-                .process("Otto/SettingsList.json")
+                .process("SettingsList.json")
             ]
         )
     ]

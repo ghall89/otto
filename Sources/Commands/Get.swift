@@ -1,3 +1,6 @@
+import Foundation
+import Rainbow
+
 func getCmd(domain: String?, key: String?) throws {
     let shell = Shell()
 
@@ -14,17 +17,20 @@ func getCmd(domain: String?, key: String?) throws {
         switch valueType {
         case .bool:
             if out.contains("0") {
-                print("false")
+                print("false".bold.magenta)
             } else if out.contains("1") {
-                print("true")
+                print("true".bold.green)
             } else {
                 print(out)
             }
         default:
-            print(out)
+            print(out.bold.blue)
         }
 
     } catch {
-        throw error
+        print(error)
+        exit(EXIT_FAILURE)
     }
+
+    exit(EXIT_SUCCESS)
 }

@@ -1,3 +1,5 @@
+import Foundation
+
 func listCmd(domain: String?) throws {
     let prefs = try getPreferenceList()
 
@@ -18,4 +20,6 @@ func listCmd(domain: String?) throws {
             }
         }
     }
+
+    exit(EXIT_SUCCESS)
 }

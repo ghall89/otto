@@ -1,3 +1,6 @@
+import Foundation
+import Rainbow
+
 func setCmd(domain: String?, key: String?, value: String?) throws {
     let shell = Shell()
     let prefs = try getPreferenceList()
@@ -14,6 +17,8 @@ func setCmd(domain: String?, key: String?, value: String?) throws {
     if resetWhenApplied == true {
         restartDomain(domainId)
     }
+
+    exit(EXIT_SUCCESS)
 }
 
 func checkValue(_ value: String?, valueType: ValueType) throws -> String {
@@ -26,20 +31,21 @@ func checkValue(_ value: String?, valueType: ValueType) throws -> String {
     switch valueType {
     case .bool:
         if !BOOL_VALUES.contains(value!) {
-            throw OttoError.runtimeError("Invalid boolean value.")
+            throw OttoError.runtimeError("Invalid boolean value.".red)
         }
     case .int:
         if Int(value!) == nil {
-            throw OttoError.runtimeError("Invalid integer value.")
+            throw OttoError.runtimeError("Invalid integer value.".red)
         }
     case .float:
         if Float(value!) == nil {
-            throw OttoError.runtimeError("Invalid float value.")
+            throw OttoError.runtimeError("Invalid float value.".red)
         }
     case .string:
         return "\"\(value!)\""
     default:
-        throw OttoError.runtimeError("Unhandled value type.")
+        print("Unhandled value type.".red)
+        exit(EXIT_FAILURE)
     }
 
     return value!

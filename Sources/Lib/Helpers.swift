@@ -1,4 +1,5 @@
 import Foundation
+import Rainbow
 
 func getPreferenceList() throws -> [Domain] {
     var preferenceList: [Domain] = []
@@ -28,7 +29,8 @@ func getPreferenceValues(
     let resetWhenApplied: Bool
 
     if domain == nil || key == nil {
-        throw OttoError.runtimeError("Missing required values.")
+        print("Missing required values.".red)
+        exit(EXIT_FAILURE)
     }
 
     if let domainObject = prefs.first(where: { $0.name == domain }) {
@@ -39,12 +41,17 @@ func getPreferenceValues(
             preferenceKey = preferenceObject.key
             valueType = preferenceObject.type
         } else {
-            throw OttoError.runtimeError(
-                "Preference key '\(key!)' not found in domain '\(domain!)'.")
+            print(
+                "Preference key \(key!.bold.underline) not found in domain \(domain!.bold.underline)."
+                    .red
+            )
+
+            exit(EXIT_FAILURE)
         }
 
     } else {
-        throw OttoError.runtimeError("Domain \(domain!) not found.")
+        print("Domain \(domain!.bold.underline) not found.".red)
+        exit(EXIT_FAILURE)
     }
 
     return (domainId, preferenceKey, valueType, resetWhenApplied)
