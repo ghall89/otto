@@ -5,7 +5,12 @@ struct Otto: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "otto",
         abstract: "A utility for managing hidden macOS preferences.",
-        subcommands: [List.self, Get.self, Set.self]
+        subcommands: [
+            List.self,
+            Get.self,
+            Set.self,
+            Reset.self,
+        ]
     )
 }
 
@@ -55,6 +60,22 @@ extension Otto {
 
         mutating func run() throws {
             try setCmd(domain: domain, key: key, value: value)
+        }
+    }
+
+    struct Reset: ParsableCommand {
+        static let configuration = CommandConfiguration(
+            abstract: "Reset preference to default"
+        )
+
+        @Argument(help: "Preference domain")
+        var domain: String
+
+        @Argument(help: "Preference key")
+        var key: String
+
+        mutating func run() throws {
+            try resetCmd(domain: domain, key: key)
         }
     }
 }

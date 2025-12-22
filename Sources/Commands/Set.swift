@@ -1,7 +1,7 @@
 import Foundation
 import Rainbow
 
-func setCmd(domain: String?, key: String?, value: String?) throws {
+func setCmd(domain: String, key: String, value: String) throws {
     let shell = Shell()
     let prefs = try getPreferenceList()
 
@@ -13,6 +13,8 @@ func setCmd(domain: String?, key: String?, value: String?) throws {
     let cmd = "write \(domainId) \"\(preferenceKey)\" \(valueType.rawValue) \(checkedValue)"
 
     let _ = shell.defaults(cmd)
+
+    print("\(domain.bold.underline) \(key.bold.underline) set to \(value.bold.underline)".green)
 
     if resetWhenApplied == true {
         restartDomain(domainId)
