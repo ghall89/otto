@@ -9,3 +9,11 @@ tasks:
     desc: "Run application"
     cmds:
       - "swift run otto {{.CLI_ARGS}}"
+  clean:
+    desc: "Clean build artifacts"
+    cmds:
+      - "swift package clean"
+  update:
+    desc: "Update packages"
+    cmds:
+      - "swift package update"
