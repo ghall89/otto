@@ -4,7 +4,7 @@ tasks:
   build:
     desc: "Build application"
     cmds:
-      - "swift build"
+      - "swift build -c release --arch arm64 --arch x86_64"
   run:
     desc: "Run application"
     cmds:
