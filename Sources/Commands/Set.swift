@@ -17,7 +17,7 @@ func setCmd(domain: String, key: String, value: String) throws {
     print("\(domain.bold.underline) \(key.bold.underline) set to \(value.bold.underline)".green)
 
     if resetWhenApplied == true {
-        restartDomain(domainId)
+        print("You will need to log out and back in for your changes to take effect.")
     }
 
     exit(EXIT_SUCCESS)
