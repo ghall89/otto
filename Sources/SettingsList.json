@@ -49,7 +49,7 @@
       },
       {
         "name": "spring-load-on-all",
-        "desc": "Spring-load actions for all items in dock. ",
+        "desc": "Spring-load actions for all items in Dock.",
         "key": "enable-spring-load-actions-on-all-items",
         "type": "-bool"
       }
