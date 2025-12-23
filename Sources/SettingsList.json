@@ -5,7 +5,8 @@
     "reset_when_applied": true,
     "preferences": [
       {
-        "name": "show-all",
+        "name": "show-hidden",
+        "desc": "Show hidden files/folders.",
         "key": "AppleShowAllFiles",
         "type": "-bool"
       }
@@ -18,8 +19,65 @@
     "preferences": [
       {
         "name": "autohide-delay",
+        "desc": "Delay for showing dock while hidden.",
         "key": "autohide-delay",
         "type": "-float"
+      },
+      {
+        "name": "active-only",
+        "desc": "Show only active applications",
+        "key": "static-only",
+        "type": "-bool"
+      },
+      {
+        "name": "single-app-mode",
+        "desc": "",
+        "key": "single-app",
+        "type": "-bool"
+      },
+      {
+        "name": "dim-hidden",
+        "desc": "Dim the icons of hidden apps.",
+        "key": "showhidden",
+        "type": "-bool"
+      },
+      {
+        "name": "allow-slow-motion",
+        "desc": "When enabled, hold 'shift' for slow-mo animations.",
+        "key": "slow-motion-allowed",
+        "type": "-bool"
+      },
+      {
+        "name": "spring-load-on-all",
+        "desc": "Spring-load actions for all items in dock. ",
+        "key": "enable-spring-load-actions-on-all-items",
+        "type": "-bool"
+      }
+    ]
+  },
+  {
+    "name": "screencapture",
+    "domain": "com.apple.screencapture",
+    "reset_when_applied": true,
+    "preferences": [
+      {
+        "name": "disable-shadow",
+        "desc": "Remove shadow when taking screenshots.",
+        "key": "disable-shadow",
+        "type": "-bool"
+      }
+    ]
+  },
+  {
+    "name": "universalaccess",
+    "domain": "com.apple.universalaccess",
+    "reset_when_applied": true,
+    "preferences": [
+      {
+        "name": "show-titlebar-icons",
+        "desc": "Always show titlebar icons in Finder windows.",
+        "key": "showWindowTitlebarIcons",
+        "type": "-bool"
       }
     ]
   }
