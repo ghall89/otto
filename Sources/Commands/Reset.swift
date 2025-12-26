@@ -1,28 +1,41 @@
+import ArgumentParser
 import Foundation
 import Rainbow
 
-func resetCmd(domain: String, key: String) throws {
-    let shell = Shell()
+extension Otto {
+    struct Reset: ParsableCommand {
+        static let configuration = CommandConfiguration(
+            abstract: "Reset preference to default"
+        )
 
-    do {
-        let prefs = try getPreferenceList()
-        let (domainId, preferenceKey, _, resetWhenApplied) =
-            try getPreferenceValues(prefs: prefs, domain: domain, key: key)
+        @Argument(help: "Preference domain")
+        var domain: String
 
-        let cmd = "delete \(domainId) \(preferenceKey)"
+        @Argument(help: "Preference key")
+        var key: String
 
-        let _ = shell.defaults(cmd)
-
-        print("\(domain.bold.underline) \(key.bold.underline) reset to default".green)
-
-        if resetWhenApplied {
-            restartDomain(domainId)
+        mutating func run() throws {
+            try reset(domain: domain, key: key)
         }
 
-    } catch {
-        print(error)
-        exit(EXIT_FAILURE)
-    }
+        private func reset(domain: String, key: String) throws {
+            let shell = Shell()
 
-    exit(EXIT_SUCCESS)
+            do {
+                let prefs = try getPreferenceList()
+                let (domainId, preferenceKey, _, resetWhenApplied) =
+                    try getPreferenceValues(prefs: prefs, domain: domain, key: key)
+
+                let cmd = "delete \(domainId) \(preferenceKey)"
+
+                let _ = shell.defaults(cmd)
+
+                logger.success("\(domain.bold.underline) \(key.bold.underline) reset to default")
+
+                if resetWhenApplied {
+                    restartDomain(domainId)
+                }
+            }
+        }
+    }
 }

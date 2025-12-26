@@ -1,54 +1,76 @@
+import ArgumentParser
 import Foundation
 import Rainbow
 
-func setCmd(domain: String, key: String, value: String) throws {
-    let shell = Shell()
-    let prefs = try getPreferenceList()
+extension Otto {
+    struct Set: ParsableCommand {
+        static let configuration = CommandConfiguration(
+            abstract: "Set a new value for a preference."
+        )
 
-    let (domainId, preferenceKey, valueType, resetWhenApplied) = try getPreferenceValues(
-        prefs: prefs, domain: domain, key: key)
+        @Argument(help: "Preference domain")
+        var domain: String
 
-    let checkedValue = try checkValue(value, valueType: valueType)
+        @Argument(help: "Preference key")
+        var key: String
 
-    let cmd = "write \(domainId) \"\(preferenceKey)\" \(valueType.rawValue) \(checkedValue)"
+        @Argument(help: "Preference value")
+        var value: String
 
-    let _ = shell.defaults(cmd)
-
-    print("\(domain.bold.underline) \(key.bold.underline) set to \(value.bold.underline)".green)
-
-    if resetWhenApplied == true {
-        print("You will need to log out and back in for your changes to take effect.")
-    }
-
-    exit(EXIT_SUCCESS)
-}
-
-func checkValue(_ value: String?, valueType: ValueType) throws -> String {
-    if value == nil {
-        throw OttoError.runtimeError("No value provided.")
-    }
-
-    let BOOL_VALUES = ["yes", "no", "true", "false"]
-
-    switch valueType {
-    case .bool:
-        if !BOOL_VALUES.contains(value!) {
-            throw OttoError.runtimeError("Invalid boolean value.".red)
+        mutating func run() throws {
+            try set(domain: domain, key: key, value: value)
         }
-    case .int:
-        if Int(value!) == nil {
-            throw OttoError.runtimeError("Invalid integer value.".red)
-        }
-    case .float:
-        if Float(value!) == nil {
-            throw OttoError.runtimeError("Invalid float value.".red)
-        }
-    case .string:
-        return "\"\(value!)\""
-    default:
-        print("Unhandled value type.".red)
-        exit(EXIT_FAILURE)
-    }
 
-    return value!
+        private func set(domain: String, key: String, value: String) throws {
+            let shell = Shell()
+            let prefs = try getPreferenceList()
+
+            let (domainId, preferenceKey, valueType, resetWhenApplied) = try getPreferenceValues(
+                prefs: prefs, domain: domain, key: key)
+
+            let checkedValue = try checkValue(value, valueType: valueType)
+
+            let cmd = "write \(domainId) \"\(preferenceKey)\" \(valueType.rawValue) \(checkedValue)"
+
+            let _ = shell.defaults(cmd)
+
+            print(
+                "\(domain.bold.underline) \(key.bold.underline) set to \(value.bold.underline)"
+                    .green)
+
+            if resetWhenApplied == true {
+                print("You will need to log out and back in for your changes to take effect.")
+            }
+
+        }
+
+        private func checkValue(_ value: String?, valueType: ValueType) throws -> String {
+            if value == nil {
+                throw OttoError.runtimeError("No value provided.")
+            }
+
+            let BOOL_VALUES = ["yes", "no", "true", "false"]
+
+            switch valueType {
+            case .bool:
+                if !BOOL_VALUES.contains(value!) {
+                    throw OttoError.invalidValue("bool")
+                }
+            case .int:
+                if Int(value!) == nil {
+                    throw OttoError.invalidValue("integer")
+                }
+            case .float:
+                if Float(value!) == nil {
+                    throw OttoError.invalidValue("float")
+                }
+            case .string:
+                return "\"\(value!)\""
+            default:
+                throw OttoError.invalidInput
+            }
+
+            return value!
+        }
+    }
 }

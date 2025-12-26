@@ -1,26 +1,63 @@
+import ArgumentParser
 import Foundation
 import Rainbow
 
-func listCmd(domain: String?) throws {
-    let prefs = try getPreferenceList()
+extension Otto {
+    struct List: ParsableCommand {
+        static let configuration = CommandConfiguration(
+            abstract: "List all available preferences."
+        )
 
-    if domain != nil {
-        if let domain = prefs.first(where: { $0.name == domain }) {
-            domain.preferences.forEach { pref in
-                print("\(pref.name.underline) <\(pref.type)> - \(pref.desc)".blue)
-            }
-        } else {
-            print("No preferences found...")
+        @Argument(help: "Preference domain")
+        var domain: String?
+
+        mutating func run() throws {
+            try list(domain: domain)
         }
-    } else {
-        prefs.forEach { domain in
-            print(domain.name.bold.green)
 
-            domain.preferences.forEach { pref in
-                print("  \(pref.name.underline) <\(pref.type)> - \(pref.desc)".blue)
+        private func list(domain: String?) throws {
+            let domains = try getPreferenceList()
+
+            if domain != nil {
+                if let domain = domains.first(where: { $0.name == domain }) {
+                    var message = ""
+
+                    domain.preferences.forEach { pref in
+                        message.append(
+                            formatPreferenceInfo(pref)
+                        )
+                    }
+
+                    logger.info(message)
+                } else {
+                    logger.info("No preferences found...")
+                }
+            } else {
+                var message = ""
+
+                domains.enumerated().forEach { domainIndex, domain in
+                    message.append("\(domain.name.bold)\n")
+
+                    domain.preferences.enumerated().forEach { prefIndex, pref in
+                        message.append(
+                            formatPreferenceInfo(pref)
+                        )
+
+                        if prefIndex == (domain.preferences.count - 1)
+                            && domainIndex != (domains.count - 1)
+                        {
+                            message.append("\n")
+                        }
+                    }
+
+                }
+
+                logger.info(message)
             }
+        }
+
+        private func formatPreferenceInfo(_ pref: Preference) -> String {
+            return "- \(pref.name.underline) <\(pref.type)> - \(pref.desc)\n"
         }
     }
-
-    exit(EXIT_SUCCESS)
 }

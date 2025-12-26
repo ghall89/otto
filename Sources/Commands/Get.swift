@@ -1,36 +1,52 @@
+import ArgumentParser
 import Foundation
 import Rainbow
 
-func getCmd(domain: String?, key: String?) throws {
-    let shell = Shell()
+extension Otto {
+    struct Get: ParsableCommand {
+        static let configuration = CommandConfiguration(
+            abstract: "Check the current value of a preference."
+        )
 
-    do {
-        let prefs = try getPreferenceList()
+        @Argument(help: "Preference domain")
+        var domain: String
 
-        let (domainId, preferenceKey, valueType, _) = try getPreferenceValues(
-            prefs: prefs, domain: domain, key: key)
+        @Argument(help: "Preference key")
+        var key: String
 
-        let cmd = "read \(domainId) \(preferenceKey)"
-
-        let out = shell.defaults(cmd)
-
-        switch valueType {
-        case .bool:
-            if out.contains("0") {
-                print("false".bold.magenta)
-            } else if out.contains("1") {
-                print("true".bold.green)
-            } else {
-                print(out)
-            }
-        default:
-            print(out.bold.blue)
+        mutating func run() throws {
+            try get(domain: domain, key: key)
         }
 
-    } catch {
-        print(error)
-        exit(EXIT_FAILURE)
-    }
+        private func get(domain: String?, key: String?) throws {
+            let shell = Shell()
 
-    exit(EXIT_SUCCESS)
+            do {
+                let prefs = try getPreferenceList()
+
+                let (domainId, preferenceKey, valueType, _) = try getPreferenceValues(
+                    prefs: prefs, domain: domain, key: key)
+
+                let cmd = "read \(domainId) \(preferenceKey)"
+
+                let out = shell.defaults(cmd)
+
+                switch valueType {
+                case .bool:
+                    if out.contains("0") {
+                        logger.info("false")
+                    } else if out.contains("1") {
+                        logger.info("true".bold.green)
+                    } else {
+                        logger.info(out)
+                    }
+                default:
+                    logger.info(out.bold.blue)
+                }
+
+            } catch {
+                throw OttoError.runtimeError(error.localizedDescription)
+            }
+        }
+    }
 }
