@@ -16,10 +16,9 @@ extension Otto {
         }
 
         private func list(domain: String?) throws {
-            let domains = try getPreferenceList()
 
             if domain != nil {
-                if let domain = domains.first(where: { $0.name == domain }) {
+                if let domain = Otto.preferenceList.first(where: { $0.name == domain }) {
                     var message = ""
 
                     domain.preferences.forEach { pref in
@@ -35,7 +34,7 @@ extension Otto {
             } else {
                 var message = ""
 
-                domains.enumerated().forEach { domainIndex, domain in
+                Otto.preferenceList.enumerated().forEach { domainIndex, domain in
                     message.append("\(domain.name.bold)\n")
 
                     domain.preferences.enumerated().forEach { prefIndex, pref in
@@ -44,7 +43,7 @@ extension Otto {
                         )
 
                         if prefIndex == (domain.preferences.count - 1)
-                            && domainIndex != (domains.count - 1)
+                            && domainIndex != (Otto.preferenceList.count - 1)
                         {
                             message.append("\n")
                         }

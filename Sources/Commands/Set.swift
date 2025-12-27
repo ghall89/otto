@@ -23,10 +23,9 @@ extension Otto {
 
         private func set(domain: String, key: String, value: String) throws {
             let shell = Shell()
-            let prefs = try getPreferenceList()
 
-            let (domainId, preferenceKey, valueType, resetWhenApplied) = try getPreferenceValues(
-                prefs: prefs, domain: domain, key: key)
+            let (domainId, preferenceKey, valueType, resetWhenApplied) =
+                try fetchPreferenceMetadata(domain: domain, key: key)
 
             let checkedValue = try checkValue(value, valueType: valueType)
 

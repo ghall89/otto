@@ -18,14 +18,12 @@ extension Otto {
             try get(domain: domain, key: key)
         }
 
-        private func get(domain: String?, key: String?) throws {
+        private func get(domain: String, key: String) throws {
             let shell = Shell()
 
             do {
-                let prefs = try getPreferenceList()
-
-                let (domainId, preferenceKey, valueType, _) = try getPreferenceValues(
-                    prefs: prefs, domain: domain, key: key)
+                let (domainId, preferenceKey, valueType, _) = try fetchPreferenceMetadata(
+                    domain: domain, key: key)
 
                 let cmd = "read \(domainId) \(preferenceKey)"
 

@@ -22,9 +22,8 @@ extension Otto {
             let shell = Shell()
 
             do {
-                let prefs = try getPreferenceList()
                 let (domainId, preferenceKey, _, resetWhenApplied) =
-                    try getPreferenceValues(prefs: prefs, domain: domain, key: key)
+                    try fetchPreferenceMetadata(domain: domain, key: key)
 
                 let cmd = "delete \(domainId) \(preferenceKey)"
 

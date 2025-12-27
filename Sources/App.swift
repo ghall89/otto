@@ -3,6 +3,7 @@ import ArgumentParser
 @main
 struct Otto: ParsableCommand {
     static let logger = Logger()
+    static let preferenceList: [Domain] = getPreferenceList()
 
     static let configuration = CommandConfiguration(
         commandName: "otto",
