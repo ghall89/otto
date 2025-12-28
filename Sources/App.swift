@@ -1,4 +1,5 @@
-import ArgumentParser
+import struct ArgumentParser.CommandConfiguration
+import protocol ArgumentParser.ParsableCommand
 
 @main
 struct Otto: ParsableCommand {
@@ -13,6 +14,7 @@ struct Otto: ParsableCommand {
             Get.self,
             Set.self,
             Reset.self,
+            Export.self,
         ]
     )
 }

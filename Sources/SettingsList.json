@@ -31,7 +31,7 @@
       },
       {
         "name": "single-app-mode",
-        "desc": "",
+        "desc": "Hide other windows on application focus.",
         "key": "single-app",
         "type": "-bool"
       },
