@@ -1,9 +1,6 @@
+import ArgumentParser
 import Foundation
 import Rainbow
-
-import struct ArgumentParser.Argument
-import struct ArgumentParser.CommandConfiguration
-import protocol ArgumentParser.ParsableCommand
 
 extension Otto {
     struct Get: ParsableCommand {

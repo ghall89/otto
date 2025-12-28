@@ -1,8 +1,5 @@
+import ArgumentParser
 import Foundation
-
-import struct ArgumentParser.Argument
-import struct ArgumentParser.CommandConfiguration
-import protocol ArgumentParser.ParsableCommand
 
 extension Otto {
     struct Export: ParsableCommand {
