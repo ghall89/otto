@@ -3,38 +3,38 @@ import Foundation
 import Rainbow
 
 extension Otto {
-    struct Reset: ParsableCommand {
-        static let configuration = CommandConfiguration(
-            abstract: "Reset preference to default"
-        )
+	struct Reset: ParsableCommand {
+		static let configuration = CommandConfiguration(
+			abstract: "Reset preference to default",
+		)
 
-        @Argument(help: "Preference domain")
-        var domain: String
+		@Argument(help: "Preference domain")
+		var domain: String
 
-        @Argument(help: "Preference key")
-        var key: String
+		@Argument(help: "Preference key")
+		var key: String
 
-        mutating func run() throws {
-            try reset(domain: domain, key: key)
-        }
+		mutating func run() throws {
+			try reset(domain: domain, key: key)
+		}
 
-        private func reset(domain: String, key: String) throws {
-            let shell = Shell()
+		private func reset(domain: String, key: String) throws {
+			let shell = Shell()
 
-            do {
-                let (domainId, preferenceKey, _, resetWhenApplied) =
-                    try fetchPreferenceMetadata(domain: domain, key: key)
+			do {
+				let (domainID, preferenceKey, _, resetWhenApplied) =
+					try fetchPreferenceMetadata(domain: domain, key: key)
 
-                let cmd = "delete \(domainId) \(preferenceKey)"
+				let cmd = "delete \(domainID) \(preferenceKey)"
 
-                let _ = shell.defaults(cmd)
+				_ = shell.defaults(cmd)
 
-                logger.success("\(domain.bold.underline) \(key.bold.underline) reset to default")
+				logger.success("\(domain.bold.underline) \(key.bold.underline) reset to default")
 
-                if resetWhenApplied {
-                    restartDomain(domainId)
-                }
-            }
-        }
-    }
+				if resetWhenApplied {
+					restartDomain(domainID)
+				}
+			}
+		}
+	}
 }

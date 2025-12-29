@@ -3,60 +3,58 @@ import Foundation
 import Rainbow
 
 extension Otto {
-    struct List: ParsableCommand {
-        static let configuration = CommandConfiguration(
-            abstract: "List all available preferences."
-        )
+	struct List: ParsableCommand {
+		static let configuration = CommandConfiguration(
+			abstract: "List all available preferences.",
+		)
 
-        @Argument(help: "Preference domain")
-        var domain: String?
+		@Argument(help: "Preference domain")
+		var domain: String?
 
-        mutating func run() throws {
-            try list(domain: domain)
-        }
+		mutating func run() throws {
+			try list(domain: domain)
+		}
 
-        private func list(domain: String?) throws {
+		private func list(domain: String?) {
+			if domain != nil {
+				if let domain = Otto.preferenceList.first(where: { $0.name == domain }) {
+					var message = ""
 
-            if domain != nil {
-                if let domain = Otto.preferenceList.first(where: { $0.name == domain }) {
-                    var message = ""
+					for pref in domain.preferences {
+						message.append(
+							formatPreferenceInfo(pref),
+						)
+					}
 
-                    domain.preferences.forEach { pref in
-                        message.append(
-                            formatPreferenceInfo(pref)
-                        )
-                    }
+					logger.info(message)
+				} else {
+					logger.info("No preferences found...")
+				}
+			} else {
+				var message = ""
 
-                    logger.info(message)
-                } else {
-                    logger.info("No preferences found...")
-                }
-            } else {
-                var message = ""
+				for (domainIndex, domain) in Otto.preferenceList.enumerated() {
+					message.append("\(domain.name.bold)\n")
 
-                Otto.preferenceList.enumerated().forEach { domainIndex, domain in
-                    message.append("\(domain.name.bold)\n")
+					for (prefIndex, pref) in domain.preferences.enumerated() {
+						message.append(
+							formatPreferenceInfo(pref),
+						)
 
-                    domain.preferences.enumerated().forEach { prefIndex, pref in
-                        message.append(
-                            formatPreferenceInfo(pref)
-                        )
+						if prefIndex == (domain.preferences.count - 1),
+						   domainIndex != (Otto.preferenceList.count - 1)
+						{
+							message.append("\n")
+						}
+					}
+				}
 
-                        if prefIndex == (domain.preferences.count - 1)
-                            && domainIndex != (Otto.preferenceList.count - 1)
-                        {
-                            message.append("\n")
-                        }
-                    }
+				logger.info(message)
+			}
+		}
 
-                }
-
-                logger.info(message)
-            }
-        }
-
-        private func formatPreferenceInfo(_ pref: Preference) -> String {
-            return "- \(pref.name.underline) <\(pref.type)> - \(pref.desc)\n"
-        }
-    }
+		private func formatPreferenceInfo(_ pref: Preference) -> String {
+			"- \(pref.name.underline) <\(pref.type)> - \(pref.desc)\n"
+		}
+	}
 }

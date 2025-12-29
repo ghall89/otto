@@ -17,3 +17,7 @@ tasks:
     desc: "Update packages"
     cmds:
       - "swift package update"
+  format:
+    desc: "Swift format"
+    cmds:
+      - "swiftformat ."

@@ -3,18 +3,18 @@ import protocol ArgumentParser.ParsableCommand
 
 @main
 struct Otto: ParsableCommand {
-    static let logger = Logger()
-    static let preferenceList: [Domain] = getPreferenceList()
+	static let logger = Logger()
+	static let preferenceList: [Domain] = getPreferenceList()
 
-    static let configuration = CommandConfiguration(
-        commandName: "otto",
-        abstract: "A utility for managing hidden macOS preferences.",
-        subcommands: [
-            List.self,
-            Get.self,
-            Set.self,
-            Reset.self,
-            Export.self,
-        ]
-    )
+	static let configuration = CommandConfiguration(
+		commandName: "otto",
+		abstract: "A utility for managing hidden macOS preferences.",
+		subcommands: [
+			List.self,
+			Get.self,
+			Set.self,
+			Reset.self,
+			Export.self,
+		],
+	)
 }

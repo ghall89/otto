@@ -3,21 +3,21 @@ import Foundation
 import Rainbow
 
 extension Otto {
-    struct Get: ParsableCommand {
-        static let configuration = CommandConfiguration(
-            abstract: "Check the current value of a preference."
-        )
+	struct Get: ParsableCommand {
+		static let configuration = CommandConfiguration(
+			abstract: "Check the current value of a preference.",
+		)
 
-        @Argument(help: "Preference domain")
-        var domain: String
+		@Argument(help: "Preference domain")
+		var domain: String
 
-        @Argument(help: "Preference key")
-        var key: String
+		@Argument(help: "Preference key")
+		var key: String
 
-        mutating func run() throws {
-            let value = try readPreferenceValue(domain: domain, key: key)
+		mutating func run() throws {
+			let value = try readPreferenceValue(domain: domain, key: key)
 
-            logger.info(value)
-        }
-    }
+			logger.info(value)
+		}
+	}
 }

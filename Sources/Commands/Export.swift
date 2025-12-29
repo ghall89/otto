@@ -2,32 +2,32 @@ import ArgumentParser
 import Foundation
 
 extension Otto {
-    struct Export: ParsableCommand {
-        static let configuration = CommandConfiguration(
-            abstract: "Export current preferences to a text file."
-        )
+	struct Export: ParsableCommand {
+		static let configuration = CommandConfiguration(
+			abstract: "Export current preferences to a text file.",
+		)
 
-        @Argument(help: "Export path.")
-        var path: String?
+		@Argument(help: "Export path.")
+		var path: String?
 
-        mutating func run() throws {
-            var exportContents = ""
+		mutating func run() throws {
+			var exportContents = ""
 
-            preferenceList.forEach { domain in
-                let preferences = domain.preferences
+			for domain in preferenceList {
+				let preferences = domain.preferences
 
-                preferences.forEach { preference in
-                    let value = try! readPreferenceValue(domain: domain.name, key: preference.name)
+				for preference in preferences {
+					let value = try! readPreferenceValue(domain: domain.name, key: preference.name)
 
-                    if !value.contains("does not exist") {
-                        exportContents.append("\(domain.name) \(preference.name) \(value)\n")
-                    }
-                }
-            }
+					if !value.contains("does not exist") {
+						exportContents.append("\(domain.name) \(preference.name) \(value)\n")
+					}
+				}
+			}
 
-            try stringToTextFile(exportContents, filename: "preferences", out: path)
+			try stringToTextFile(exportContents, filename: "preferences", out: path)
 
-            logger.success("Settings exported to \(path ?? "current directory").")
-        }
-    }
+			logger.success("Settings exported to \(path ?? "current directory").")
+		}
+	}
 }

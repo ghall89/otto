@@ -1,22 +1,22 @@
 enum OttoError: Error {
-    case invalidInput
-    case invalidValue(String)
-    case runtimeError(String)
-    case unknown
+	case invalidInput
+	case invalidValue(String)
+	case runtimeError(String)
+	case unknown
 
-    private static let logger = Logger()
+	private static let logger = Logger()
 
-    static func error(_ error: OttoError) -> OttoError {
-        logger.error(error.logMessage)
-        return error
-    }
+	private var logMessage: String {
+		switch self {
+			case .invalidInput: "Invalid input provided."
+			case let .invalidValue(type): "Invalid \(type) value."
+			case let .runtimeError(message): message
+			case .unknown: "An unknown error occurred."
+		}
+	}
 
-    private var logMessage: String {
-        switch self {
-        case .invalidInput: return "Invalid input provided."
-        case .invalidValue(let type): return "Invalid \(type) value."
-        case .runtimeError(let message): return message
-        case .unknown: return "An unknown error occurred."
-        }
-    }
+	static func error(_ error: OttoError) -> OttoError {
+		logger.error(error.logMessage)
+		return error
+	}
 }
