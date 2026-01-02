@@ -23,6 +23,5 @@ func getPreferenceList() -> [Domain] {
 func restartDomain(_ domain: String) {
 	let shell = Shell()
 
-	let closeCmd = "osascript -e 'quit app id \"\(domain)\"'"
-	_ = shell.run(closeCmd)
+	shell.osascript("quit app id \"\(domain)\"")
 }

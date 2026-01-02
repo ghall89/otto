@@ -3,7 +3,17 @@ import Foundation
 struct Shell {
 	private let zsh = "/bin/zsh"
 
-	func run(_ cmd: String) -> String {
+	/// run the 'defaults' CLI tool
+	func defaults(_ opts: String) -> String {
+		run("/usr/bin/defaults \(opts)")
+	}
+
+	/// run the 'osascript' CLI tool
+	func osascript(_ script: String) {
+		_ = run("osascript -e '\(script)'")
+	}
+
+	private func run(_ cmd: String) -> String {
 		let task = Process()
 		let pipe = Pipe()
 
@@ -15,15 +25,12 @@ struct Shell {
 		task.launch()
 		task.waitUntilExit()
 
-		let data = pipe.fileHandleForReading.readDataToEndOfFile()
-		guard let output = String(data: data, encoding: .utf8) else {
-			return ""
+		guard task.terminationStatus == 0 else {
+			throw ShellError.commandFailed(cmd, task.terminationStatus)
 		}
 
-		return output
-	}
+		let data = pipe.fileHandleForReading.readDataToEndOfFile()
 
-	func defaults(_ cmd: String) -> String {
-		run("/usr/bin/defaults \(cmd)")
+		return String(data: data, encoding: .utf8)!
 	}
 }

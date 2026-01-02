@@ -1,6 +1,7 @@
 enum OttoError: Error {
 	case invalidInput
 	case invalidValue(String)
+	case commandFailed(String, Int32)
 	case runtimeError(String)
 	case unknown
 
@@ -10,6 +11,7 @@ enum OttoError: Error {
 		switch self {
 			case .invalidInput: "Invalid input provided."
 			case let .invalidValue(type): "Invalid \(type) value."
+			case let .commandFailed(error, code): "Shell error \(code) running \(error)"
 			case let .runtimeError(message): message
 			case .unknown: "An unknown error occurred."
 		}
