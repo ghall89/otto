@@ -7,9 +7,15 @@ func readPreferenceValue(domain: String, key: String) throws -> String {
 			key: key,
 		)
 
-		let cmd = "read \(domainID) \(preferenceKey) \(valueType)"
+		let cmd = DefaultsOptions(
+			type: .read,
+			domain: domainID,
+			preference: preferenceKey,
+			valueType: valueType,
+		)
 
-		let out = shell.defaults(cmd).trimmingCharacters(in: .whitespacesAndNewlines)
+		let out = shell.defaults(try cmd.options)
+			.trimmingCharacters(in: .whitespacesAndNewlines)
 
 		switch valueType {
 			case .bool:

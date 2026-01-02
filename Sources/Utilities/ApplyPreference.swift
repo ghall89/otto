@@ -6,9 +6,15 @@ func applyPreference(domain: String, key: String, value: String) throws {
 
 	let checkedValue = try verifyValue(value, valueType: valueType)
 
-	let cmd = "write \(domainID) \"\(preferenceKey)\" \(valueType.rawValue) \(checkedValue)"
+	let cmd = DefaultsOptions(
+		type: .write,
+		domain: domainID,
+		preference: preferenceKey,
+		value: checkedValue,
+		valueType: valueType,
+	)
 
-	_ = shell.defaults(cmd)
+	_ = shell.defaults(try cmd.options)
 
 	print(
 		"\(domain.bold.underline) \(key.bold.underline) set to \(value.bold.underline)"

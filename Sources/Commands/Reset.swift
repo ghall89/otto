@@ -25,9 +25,9 @@ extension Otto {
 				let (domainID, preferenceKey, _, resetWhenApplied) =
 					try fetchPreferenceMetadata(domain: domain, key: key)
 
-				let cmd = "delete \(domainID) \(preferenceKey)"
+				let cmd = DefaultsOptions(type: .delete, domain: domainID, preference: preferenceKey)
 
-				_ = shell.defaults(cmd)
+				_ = shell.defaults(try cmd.options)
 
 				logger.success("\(domain.bold.underline) \(key.bold.underline) reset to default")
 
