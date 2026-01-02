@@ -1,7 +1,7 @@
 import ArgumentParser
 
 @main
-struct Otto: ParsableCommand {
+struct Otto: AsyncParsableCommand {
 	static let logger = Logger()
 	static let preferenceList: [Domain] = getPreferenceList()
 
@@ -14,6 +14,7 @@ struct Otto: ParsableCommand {
 			Set.self,
 			Reset.self,
 			Export.self,
+			Config.self,
 		],
 	)
 }

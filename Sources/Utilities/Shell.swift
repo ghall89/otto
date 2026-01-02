@@ -5,15 +5,15 @@ struct Shell {
 
 	/// run the 'defaults' CLI tool
 	func defaults(_ opts: String) -> String {
-		run("/usr/bin/defaults \(opts)")
+		try! run("/usr/bin/defaults \(opts)")
 	}
 
 	/// run the 'osascript' CLI tool
 	func osascript(_ script: String) {
-		_ = run("osascript -e '\(script)'")
+		_ = try! run("osascript -e '\(script)'")
 	}
 
-	private func run(_ cmd: String) -> String {
+	private func run(_ cmd: String) throws -> String {
 		let task = Process()
 		let pipe = Pipe()
 
@@ -26,7 +26,7 @@ struct Shell {
 		task.waitUntilExit()
 
 		guard task.terminationStatus == 0 else {
-			throw ShellError.commandFailed(cmd, task.terminationStatus)
+			throw OttoError.commandFailed(cmd, task.terminationStatus)
 		}
 
 		let data = pipe.fileHandleForReading.readDataToEndOfFile()

@@ -1,4 +1,4 @@
-struct Preference: Codable {
+struct Preference: Codable, Hashable {
 	var name: String
 	var desc: String
 	var key: String
