@@ -11,8 +11,8 @@ extension Otto {
 		@Argument(help: "Preference domain")
 		var domain: String?
 
-		mutating func run() throws {
-			try list(domain: domain)
+		mutating func run() {
+			list(domain: domain)
 		}
 
 		private func list(domain: String?) {
