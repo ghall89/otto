@@ -1,11 +1,7 @@
---disable hoistAwait
---disable hoistTry
 --enable acronyms
 --enable blankLinesAfterGuardStatements
 --enable blankLinesBetweenImports
 --enable blockComments
---enable docComments
---enable emptyExtensions
 --enable environmentEntry
 --enable isEmpty
 --enable noExplicitOwnership
@@ -24,7 +20,6 @@
 --enable redundantThrows
 --enable singlePropertyPerLine
 --enable sortSwitchCases
---enable unusedPrivateDeclarations
 --enable urlMacro
 --enable wrapConditionalBodies
 --enable wrapEnumCases
@@ -56,7 +51,7 @@
 --semicolons never
 --short-optionals always
 --single-line-for-each convert
---stored-var-attributes prev-line
+--stored-var-attributes same-line
 --tab-width 2
 --type-attributes prev-line
 --type-body-marks remove
